@@ -1,0 +1,76 @@
+{{#if isSecondary}}
+    <ul class="navigation flex flex-wrap text-sm text-gray-500 dark:text-gray-400" role="list">
+        {{#foreach navigation}}
+            <li data-slug="{{slug}}" class="mr-8 mb-3">
+                <a href="{{url absolute="true"}}" class="group inline-flex items-center hover:opacity-80">
+                    {{label}}
+
+                    {{> icons/arrow-up-right class="relative top-px hidden group-[.external]:inline flex-shrink-0 w-3.5 h-3.5 ml-1" }}
+                </a>
+            </li>
+        {{/foreach}}
+    </ul>
+{{else if isMobile }}
+    <ul class="navigation space-y-2 -mx-3">
+        {{#foreach navigation}}
+            <li data-slug="{{slug}}">
+                <a href="{{url absolute="true"}}" class="{{link_class for=(url absolute="true") class="group px-3 py-1.5 flex items-center font-semibold text-sm leading-6 rounded-lg hover:bg-gray-100 [&.current]:bg-gray-100 [&.current-parent]:bg-gray-100 dark:hover:bg-gray-700 dark:[&.current]:bg-gray-700 dark:[&.current-parent]:bg-gray-700" activeClass="current"}}">
+                    {{label}}
+
+                    {{> icons/arrow-up-right class="hidden group-[.external]:inline flex-shrink-0 w-4 h-4 ml-1" }}
+                </a>
+            </li>
+        {{/foreach}}                    
+    </ul>
+{{else}}
+    <ul class="navigation hidden lg:flex space-x-2 text-gray-700 dark:text-gray-200" role="list">
+        {{#foreach navigation from="1" to=@custom.max_navigation_items}}
+            <li class="inline-flex {{#match @number ">" 5 }} max-3xl:hidden {{/match}}" data-slug="{{slug}}">
+                <a href="{{url absolute="true"}}" class="{{link_class for=(url absolute="true") class="group px-3 py-1.5 inline-flex items-center font-semibold text-sm leading-6 whitespace-nowrap rounded-lg hover:bg-gray-100 [&.current]:bg-gray-100 [&.current-parent]:bg-gray-100 dark:hover:bg-gray-700 dark:[&.current]:bg-gray-700 dark:[&.current-parent]:bg-gray-700" activeClass="current"}}">
+                    {{label}}
+
+                    {{> icons/arrow-up-right class="hidden group-[.external]:inline flex-shrink-0 w-4 h-4 ml-1" }}
+
+                    {{!-- Inlined here to avoid menu elements with external link jumping when the icon is set to visible  --}}
+                    <script>
+                        (function() {
+                            var link = document.currentScript.parentElement;
+                    
+                            if (link.protocol !== "javascript:" && link.hostname !== location.hostname) {
+                                link.classList.add('external');
+                                link.target = "_blank";
+                            }                            
+                        })();
+                    </script>
+                </a>
+            </li>
+        {{/foreach}}
+
+        {{!-- Dropdown (if more than x menu items, we always show 5 menu items max for screens < 1440px ) --}}
+        {{#foreach navigation from="6"}}
+            {{#if @first}}
+            <li data-dropdown-container class="group inline-flex relative {{#match @site.navigation.length "<=" @custom.max_navigation_items }} 3xl:hidden {{/match}}">
+                <button data-dropdown-toggle aria-label="{{t "Toggle menu"}}" class="px-1.5 py-1.5 rounded-lg hover:bg-gray-100 group-[.open]:bg-gray-100 dark:hover:bg-gray-700 dark:group-[.open]:bg-gray-700">
+                    {{> icons/ellipsis-horizontal class="relative w-6 h-6"}}
+                </button>
+
+                {{!-- Dropdown start !--}}
+                <ul data-dropdown class="hidden group-[.open]:block absolute top-16 -left-1/2 max-xl:-right-1/2 max-xl:left-auto w-64 py-2 px-3 space-y-1 bg-white ring-1 ring-gray-900/5 shadow-sm rounded-md dark:bg-gray-800 dark:ring-white/5 dark:ring-inset" role="list">
+            {{/if}}
+
+                <li data-slug="{{slug}}" class="block {{#match @number "<=" @custom.max_navigation_items }} 3xl:hidden {{/match}}">
+                    <a href="{{url absolute="true"}}" class="{{link_class for=(url absolute="true") class="group relative flex items-center px-3 py-1.5 font-semibold text-sm leading-6 rounded-lg hover:bg-gray-100 [&.current]:bg-gray-100 [&.current-parent]:bg-gray-100 dark:hover:bg-gray-700 dark:[&.current]:bg-gray-700 dark:[&.current-parent]:bg-gray-700" activeClass="current"}}">
+                        {{label}}
+
+                        {{> icons/arrow-up-right class="hidden group-[.external]:inline flex-shrink-0 w-4 h-4 ml-1" }}
+                    </a>
+                </li>
+
+            {{#if @last}}               
+                </ul>
+                {{!-- /Dropdown end !--}}
+            </li>
+            {{/if}}
+        {{/foreach}}
+    </ul>
+{{/if}}

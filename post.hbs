@@ -1,0 +1,15 @@
+{{!< default}}
+
+{{#post}}
+    {{#has tag="#docs" }}
+        {{> post-docs }}
+    {{else has tag="#roadmap"}}
+        {{> post-roadmap }}
+    {{else}}
+        {{#has tag="#template-narrow,#layout-narrow"}}
+            {{> post-narrow }}
+        {{else}}
+            {{> post-default }}
+        {{/has}}
+    {{/has}}
+{{/post}}

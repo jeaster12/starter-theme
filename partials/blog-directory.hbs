@@ -1,0 +1,118 @@
+<div class="outer xl:outer-xl {{#page}} {{post_class}} {{/page}}">
+    <div class="inner">
+
+        {{!-- Hero section --}}
+        {{#page}}
+            {{> hero showContent="true"}}
+        {{/page}}
+
+        {{!-- Feed / Timeline --}}
+        {{#page}}
+            {{#foreach tags}}
+                {{#get "posts" filter="tags:hash-blog+tags:{{slug}}" limit="6" as |posts pagination|}}
+                    {{#if posts}}
+                        <div class="max-w-[1200px] mx-auto py-16 sm:py-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                            <div class="flex items-center md:col-span-2 lg:col-span-3">
+                                <div class="inline-flex items-center">
+                                    <h2 class="font-semibold text-lg text-gray-900 dark:text-gray-200">
+                                        {{../name}}
+                                    </h2>
+                                    {{#if pagination}}
+                                        <span class="flex-none ml-1 mr-2 text-sm text-gray-500 dark:text-gray-400">
+                                            <span class="mx-1 opacity-80"> — </span>
+                                            <span>
+                                                {{plural pagination.total empty=(t 'No posts yet') singular=(t '% post') plural=(t '% posts')}}
+                                            </span>
+                                        </span>
+                                    {{/if}}
+                                </div>
+
+                                <a href="{{#with ..}}{{url absolute="true"}}{{/with}}" class="flex-none ml-auto inline-flex items-center text-sm text-gray-500 dark:text-gray-400 hover:opacity-80">
+                                    {{t "View all"}} 
+                                    {{> icons/arrow-narrow-right class="w-4 h-4 ml-1 text-gray-400 dark:text-gray-500"}}
+                                </a>
+                            </div>                            
+                            {{#foreach posts}}
+                                <div class="{{post_class}}">
+                                    {{#if feature_image}}
+                                        <a href="{{url absolute="true"}}" class="group block mb-2.5">
+                                            <figure>
+                                                <div class="relative rounded-md overflow-hidden bg-gray-50 dark:bg-gray-800 
+                                                        after:absolute after:top-0 after:left-0 after:w-full after:h-full after:ring-1 after:ring-inset after:ring-gray-900/5 dark:after:ring-gray-50/5 after:rounded-md
+                                                        {{#with ../../..}}
+                                                            {{#has tag="#template-cards-img-1-1"}} 
+                                                                aspect-w-1 aspect-h-1
+                                                            {{else has tag="#template-cards-img-3-4"}} 
+                                                                aspect-w-3 aspect-h-4 
+                                                            {{else has tag="#template-cards-img-4-3"}} 
+                                                                aspect-w-4 aspect-h-3 
+                                                            {{else has tag="#template-cards-img-4-5"}} 
+                                                                aspect-w-4 aspect-h-5 
+                                                            {{else has tag="#template-cards-img-5-4"}}
+                                                                aspect-w-5 aspect-h-4
+                                                            {{else has tag="#template-cards-img-9-16"}}
+                                                                aspect-w-9 aspect-h-16
+                                                            {{else}}
+                                                                aspect-w-16 aspect-h-9
+                                                            {{/has}}                                            
+                                                        {{/with}}
+                                                        ">
+                                                    <img
+                                                        class="lazyload !m-0 object-cover z-10 hover:scale-105"
+                                                        data-sizes="auto"
+                                                        data-srcset="{{> srcset }}"
+                                                        srcset="{{img_url feature_image size="xxs"}}"
+                                                        src="{{img_url feature_image size="xl"}}"
+                                                        alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}"
+                                                        loading="lazy"
+                                                    />
+                                                </div>
+                                            </figure>     
+                                        </a>
+                                    {{/if}}    
+                
+                                    <a href="{{url absolute="true"}}">
+                                        <h3 class="font-semibold hover:opacity-80 text-gray-900 dark:text-gray-200">
+                                            {{title}}
+                                        </h3>
+                                    
+                                        {{#if custom_excerpt}}
+                                            {{#with ../../..}}
+                                                {{#has tag="#template-cards-excerpt"}}
+                                                    {{#with ..}}
+                                                        <p class="mt-1 mb-3 text-gray-500 dark:text-gray-400">
+                                                            {{custom_excerpt}}
+                                                        </p>
+                                                    {{/with}}
+                                                {{/has}}
+                                            {{/with}}
+                                        {{/if}}
+
+                                        <div class="mt-1 text-gray-500 dark:text-gray-400">
+                                            {{!-- Use post published at vs updated at if #blog-updated-at is present --}}
+                                            {{#with ../../..}} {{!-- Back to page context --}}
+                                                {{#has tag="#blog-updated-at,#template-updated-at"}}
+                                                    {{#with ..}} {{!-- Back to current post context --}}
+                                                        <time class="capitalize" datetime="{{date updated_at format="YYYY-MM-DD"}}">
+                                                            {{date updated_at format="MMMM DD, YYYY"}}
+                                                        </time>
+                                                    {{/with}}
+                                                {{else}}
+                                                    {{#with ..}} {{!-- Back to current post context --}}
+                                                        <time class="capitalize" datetime="{{date format="YYYY-MM-DD"}}">
+                                                            {{date format="MMMM DD, YYYY"}}
+                                                        </time>
+                                                    {{/with}}
+                                                {{/has}}
+                                            {{/with}}
+                                        </div>
+                                    </a>
+                                </div>
+                            {{/foreach}}                        
+                        </div>
+                    {{/if}}
+                {{/get}}
+            {{/foreach}}
+        {{/page}}
+    </div>
+</div>

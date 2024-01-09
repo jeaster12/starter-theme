@@ -1,0 +1,17 @@
+{{!< default}}
+
+{{!-- Ghost doesn't do code injection for pages used as data in routes.yaml --}}
+{{#contentFor "styles"}}
+    {{#page}} {{#if codeinjection_head}} {{{codeinjection_head}}} {{/if}} {{/page}}
+{{/contentFor }}
+
+{{#contentFor "scripts"}}
+    {{#page}} {{#if codeinjection_foot}} {{{codeinjection_foot}}} {{/if}} {{/page}}
+{{/contentFor }}
+
+{{#page}}
+    {{#contentFor "extra-header-class"}} has-breadcrumbs {{/contentFor}}
+    {{#contentFor "extra-footer-class"}} no-space-top {{/contentFor}}
+    
+    {{> docs indexPage=. post=. }}
+{{/page}}

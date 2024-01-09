@@ -1,0 +1,135 @@
+{{!< default}}
+
+{{!-- Ghost doesn't do code injection for pages used as data in routes.yaml --}}
+{{#contentFor "styles"}}
+    {{#page}} {{#if codeinjection_head}} {{{codeinjection_head}}} {{/if}} {{/page}}
+{{/contentFor }}
+
+{{#contentFor "scripts"}}
+    {{#page}} {{#if codeinjection_foot}} {{{codeinjection_foot}}} {{/if}} {{/page}}
+{{/contentFor }}
+
+<div class="outer xl:outer-xl {{#page}} {{post_class}} {{/page}}">
+    <div class="inner">
+
+        {{!-- Hero section --}}
+        {{#page}}
+            {{> hero showContent="true" }}
+        {{/page}}
+
+        {{!-- Feed / Timeline --}}
+        <div class="max-w-5xl mx-auto lg:px-3 py-16 sm:py-20">
+            <div data-pagination-feed>
+                {{#foreach posts}}
+                    <div data-pagination-post class="{{post_class}}">
+                        <div class="relative flex items-center w-full lg:w-1/2 py-6 lg:py-8 border-dashed border-gray-900/10 dark:border-gray-50/10
+                            {{#if @even}} -left-px border-l-2 ml-auto pl-6 lg:pl-8 {{else}} max-lg:-left-px max-lg:border-l-2 max-lg:ml-auto max-lg:pl-6 lg:-right-px lg:border-r-2 lg:pr-8 {{/if}}
+                            {{#if featured}} lg:mx-auto lg:my-10 lg:!border-none lg:!p-0 lg:!right-0 lg:!left-0 {{/if}}  
+                            {{#if featured}} before:hidden lg:before:block before:h-9 before:w-0 before:absolute before:top-0 before:left-1/2 before:-translate-y-full before:-translate-x-px before:border-l-2 before:border-dashed before:border-gray-900/10 before:dark:border-gray-50/10 {{/if}}
+                            {{#if featured}} {{#if @last}} after:hidden {{else}} after:hidden lg:after:block {{/if}} after:h-9 after:w-0 after:absolute after:bottom-0 after:left-1/2 after:translate-y-full after:-translate-x-px after:border-l-2 after:border-dashed after:border-gray-900/10 after:dark:border-gray-50/10 {{/if}}
+                            ">
+
+                            {{!-- Dot --}}
+                            {{#if featured}}
+                                <div class="absolute z-10 top-1/2 -translate-y-1/2 -left-px -translate-x-1/2 lg:top-px lg:left-1/2 lg:-translate-y-1/2 lg:-translate-x-1/2 rounded-full border-4 border-white bg-white dark:border-gray-900 dark:bg-gray-900">
+                                    <span class="flex relative flex-none items-center justify-center w-7 h-7 rounded-full overflow-hidden bg-accent-10 text-accent">
+                                        {{> icons/milestone class="w-4 h-4"}}
+                                    </span>
+                                </div>                            
+                            {{else}}
+                                <div class="absolute rounded-full border border-white bg-white dark:border-gray-900 dark:bg-gray-900
+                                    top-1/2 -translate-y-1/2 {{#if @even}} -left-px -translate-x-1/2 {{else}} max-lg:-left-px max-lg:-translate-x-1/2 lg:-right-px lg:translate-x-1/2 {{/if}}">
+                                    <span class="flex relative flex-none items-center justify-center w-3 h-3 rounded-full overflow-hidden before:block before:opacity-20 before:bg-accent before:absolute before:inset-0 after:block after:bg-accent after:w-1.5 after:h-1.5 after:rounded-full"></span>
+                                </div>                            
+                            {{/if}}
+                            
+                            {{!-- Box --}}
+                            <a href="{{url absolute="true"}}" class="w-full p-4 dark:bg-gray-800 rounded-xl {{#if featured}} m-auto bg-white ring-2 ring-accent ring-inset {{else}} ring-1 ring-inset ring-gray-900/10 dark:ring-gray-50/10 {{/if}}">
+                                {{#if feature_image}}
+                                    <figure class="mb-3">
+                                        <div class="relative rounded-md overflow-hidden bg-gray-50 dark:bg-gray-700 
+                                                after:absolute after:top-0 after:left-0 after:w-full after:h-full after:ring-1 after:ring-inset after:ring-gray-900/5 dark:after:ring-gray-50/5 after:rounded-md
+                                                {{#with ../page}}
+                                                    {{#has tag="#template-cards-img-1-1"}} 
+                                                        aspect-w-1 aspect-h-1
+                                                    {{else has tag="#template-cards-img-3-4"}} 
+                                                        aspect-w-3 aspect-h-4 
+                                                    {{else has tag="#template-cards-img-4-3"}} 
+                                                        aspect-w-4 aspect-h-3 
+                                                    {{else has tag="#template-cards-img-4-5"}} 
+                                                        aspect-w-4 aspect-h-5 
+                                                    {{else has tag="#template-cards-img-5-4"}}
+                                                        aspect-w-5 aspect-h-4
+                                                    {{else has tag="#template-cards-img-9-16"}}
+                                                        aspect-w-9 aspect-h-16
+                                                    {{else}}
+                                                        aspect-w-16 aspect-h-9
+                                                    {{/has}}                                            
+                                                {{/with}}
+                                                ">
+                                            <img
+                                                class="lazyload !m-0 object-cover"
+                                                data-sizes="auto"
+                                                data-srcset="{{> srcset}}"
+                                                srcset="{{img_url feature_image size="xxs"}}"
+                                                src="{{img_url feature_image size="xl"}}"
+                                                alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}"
+                                                loading="lazy"
+                                            />
+                                        </div>
+                                    </figure>
+                                {{/if}}
+
+                                {{#with ../page}}
+                                    {{#has tag="#roadmap-published-at, #template-published-at"}} 
+                                        {{#with ..}}
+                                            <time class="mb-0.5 block capitalize text-sm text-gray-500 dark:text-gray-400" datetime="{{date format="YYYY-MM-DD"}}">
+                                                {{date format="MMMM DD, YYYY"}}
+                                            </time>
+                                        {{/with}}
+                                    {{/has}}
+                                {{/with}}
+
+                                <h2 class="text-base font-semibold text-gray-900 dark:text-gray-200">
+                                    {{title}}
+                                </h2>
+                                {{#if custom_excerpt}}
+                                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">{{custom_excerpt}}</p>
+                                {{/if}}
+
+                                {{#match tags.length ">" 1}}  {{!-- #roadmap is always present, that's why 1 and not 0 --}}
+                                    <div class="flex flex-wrap mt-4">
+                                        {{#foreach tags}}
+                                            <span class="inline-flex items-center px-2 py-1 mb-1 mr-2 rounded-full ring-1 ring-gray-900/10 dark:ring-gray-50/10">
+                                                <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-gray-500" style="{{#if accent_color}}background-color: {{accent_color}}{{/if}}"></span>
+                                                <span class="text-xs font-medium leading-none">{{name}}</span>
+                                            </span>
+                                        {{/foreach}}
+                                    </div>
+                                {{/match}}
+                            </a>
+                        </div>
+                    </div>
+                {{/foreach}}
+            </div>
+        </div>
+
+        {{!-- Load more / Pagination --}}
+        {{#if pagination}}
+            <div class="flex justify-center">
+                <button 
+                    data-pagination-btn
+                    data-total-pages="{{pagination.pages}}"
+                    class="group hidden text-sm font-semibold my-16 sm:my-20 hover:opacity-80 dark:text-gray-200">
+                    <span class="flex items-center">
+                        {{t "Load more"}}
+
+                        {{> icons/arrow-sm-down class="w-4 h-4 ml-0.5 group-[.loading]:hidden"}}
+                        {{> icons/loader class="w-4 h-4 ml-0.5 hidden group-[.loading]:inline"}}
+                    </span>
+                </button>
+            </div>
+        {{/if}}
+
+    </div>
+</div>

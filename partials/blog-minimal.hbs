@@ -1,0 +1,26 @@
+<div class="outer xl:outer-xl {{#page}} {{post_class}} {{/page}}">
+    <div class="inner">
+
+        {{!-- Hero section --}}
+        {{#page}}
+            {{> hero showContent="true"}}
+        {{/page}}
+
+        {{!-- Featured Posts --}}
+        {{#with ./page}} {{!-- Back to page context --}}
+            {{#has tag="#blog-updated-at,#template-updated-at"}} {{!-- Use updated at --}}
+                {{#get "posts" filter="featured:true+tags:hash-blog" order="updated_at desc" include="tags" limit="3" as |posts| }}
+                    {{> featured-posts-minimal useUpdatedAt="true" currentPage=.. }}
+                {{/get}}
+            {{else}}
+                {{#get "posts" filter="featured:true+tags:hash-blog" include="tags" limit="3" as |posts| }}
+                    {{> featured-posts-minimal currentPage=.. }}
+                {{/get}}
+            {{/has}}
+        {{/with}}        
+
+        {{!-- Feed / Timeline --}}
+        {{> feed }}
+
+    </div>
+</div>

@@ -1,0 +1,35 @@
+/*----------------------------------------------------------------------------*/
+/* Post timeline feed */
+
+/* Hide the date if previous post was published on the same month */
+.timeline [data-post-month="01"] + [data-post-month="01"]:not(.timeline-post--break) .timeline-meta,
+.timeline [data-post-month="02"] + [data-post-month="02"]:not(.timeline-post--break) .timeline-meta,
+.timeline [data-post-month="03"] + [data-post-month="03"]:not(.timeline-post--break) .timeline-meta,
+.timeline [data-post-month="04"] + [data-post-month="04"]:not(.timeline-post--break) .timeline-meta,
+.timeline [data-post-month="05"] + [data-post-month="05"]:not(.timeline-post--break) .timeline-meta,
+.timeline [data-post-month="06"] + [data-post-month="06"]:not(.timeline-post--break) .timeline-meta,
+.timeline [data-post-month="07"] + [data-post-month="07"]:not(.timeline-post--break) .timeline-meta,
+.timeline [data-post-month="08"] + [data-post-month="08"]:not(.timeline-post--break) .timeline-meta,
+.timeline [data-post-month="09"] + [data-post-month="09"]:not(.timeline-post--break) .timeline-meta,
+.timeline [data-post-month="10"] + [data-post-month="10"]:not(.timeline-post--break) .timeline-meta,
+.timeline [data-post-month="11"] + [data-post-month="11"]:not(.timeline-post--break) .timeline-meta,
+.timeline [data-post-month="12"] + [data-post-month="12"]:not(.timeline-post--break) .timeline-meta {
+    display: none;
+}
+
+/* Hide the border for the first post, and if previous post was published on the same month */
+.timeline [data-post-month="01"] + [data-post-month="01"]:not(.timeline-post--break)::before,
+.timeline [data-post-month="02"] + [data-post-month="02"]:not(.timeline-post--break)::before,
+.timeline [data-post-month="03"] + [data-post-month="03"]:not(.timeline-post--break)::before,
+.timeline [data-post-month="04"] + [data-post-month="04"]:not(.timeline-post--break)::before,
+.timeline [data-post-month="05"] + [data-post-month="05"]:not(.timeline-post--break)::before,
+.timeline [data-post-month="06"] + [data-post-month="06"]:not(.timeline-post--break)::before,
+.timeline [data-post-month="07"] + [data-post-month="07"]:not(.timeline-post--break)::before,
+.timeline [data-post-month="08"] + [data-post-month="08"]:not(.timeline-post--break)::before,
+.timeline [data-post-month="09"] + [data-post-month="09"]:not(.timeline-post--break)::before,
+.timeline [data-post-month="10"] + [data-post-month="10"]:not(.timeline-post--break)::before,
+.timeline [data-post-month="11"] + [data-post-month="11"]:not(.timeline-post--break)::before,
+.timeline [data-post-month="12"] + [data-post-month="12"]:not(.timeline-post--break)::before,
+.timeline .timeline-post:first-child::before {
+    display: none;
+}

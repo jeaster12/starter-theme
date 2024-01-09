@@ -1,0 +1,15 @@
+{{!< default}}
+
+<div class="outer xl:outer-xl">
+    <div class="inner">
+
+        {{!-- Hero section --}}
+        {{#author}}
+            {{> hero paginationTotal=../pagination.total }}
+        {{/author}}
+
+        {{!-- Feed / Timeline --}}
+        {{> feed }}
+
+    </div>
+</div>  

@@ -1,0 +1,19 @@
+<footer data-footer class="{{{block "extra-footer-class"}}} group flex-none mt-auto text-sm text-gray-500 dark:text-gray-400 [&.no-space-top]:mt-0">
+    <div class="outer xl:outer-xl mt-24 border-t border-gray-900/10 dark:border-gray-50/5 group-[.no-space-top]:mt-0">
+        <div class="inner">
+            <div class="flex flex-col-reverse lg:flex-row lg:items-center mt-6 lg:mt-3">
+                <div class="text-xs mb-3 mr-5">
+                    <a href="{{@site.url}}">{{@site.title}}</a> &copy; {{date format="YYYY"}} 
+                </div>
+
+                <div class="mb-6 lg:mb-0 lg:ml-auto flex flex-wrap items-center text-gray-400">
+                    <button data-theme-toggle class="mb-3 mr-5 last:mr-0 inline-flex flex-shrink-0" title="{{t "Change theme"}}" aria-label="{{t "Change theme"}}">
+                        {{> icons/sun class="dark:hidden w-5 h-5 lg:w-5 lg:h-5 hover:opacity-80" }}
+                        {{> icons/moon class="hidden dark:inline w-5 h-5 lg:w-4 lg:h-4 relative -top-px hover:opacity-80" }}
+                    </button>                    
+                    {{> social-links linkClass="mb-3 mr-5 last:mr-0" iconClass="w-5 h-5 lg:w-4 lg:h-4 hover:opacity-80" }}                      
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

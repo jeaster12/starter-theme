@@ -1,0 +1,125 @@
+<div class="outer xl:outer-xl {{post_class}}">
+    <div class="inner pt-16">
+        {{!-- Content --}}
+        <article class="max-w-3xl mx-auto mb-16 sm:mb-20 md:mb-28">                      
+            <header>
+                {{#has tag="#roadmap, #changelog"}}
+                    {{#match tags.length ">" 1}}  {{!-- #changelog or #roadmap is always present, that's why 1 and not 0 --}}
+                        <div class="inline-flex flex-wrap">
+                            {{#foreach tags}}
+                                <a href="{{url absolute="true"}}" class="inline-flex items-center px-2 py-1 mb-2 mr-2 rounded-full ring-1 ring-gray-900/10 dark:ring-gray-50/10 hover:opacity-80">
+                                    <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-gray-500" style="{{#if accent_color}}background-color: {{accent_color}}{{/if}}"></span>
+                                    <span class="text-xs font-medium leading-none">{{name}}</span>
+                                </a>
+                            {{/foreach}}
+                        </div>
+                    {{/match}}
+                {{else}}
+                    {{#foreach tags limit="1"}}
+                        <a href="{{url absolute="true"}}" class="block text-sm font-medium text-accent mt-0 mb-1">
+                            {{name}}
+                        </a>
+                    {{/foreach}}
+                {{/has}}
+
+                <h1 class="text-4xl leading-tight tracking-tight font-extrabold text-gray-900 dark:text-gray-50 js-toc-ignore">
+                    {{title}}
+                </h1>
+
+                {{#if custom_excerpt}}
+                    <p class="mt-5 text-xl 4xl:text-lead text-gray-600 dark:text-gray-400">{{custom_excerpt}}</p>
+                {{/if}}
+
+                <p class="mt-5 text-base text-gray-400 dark:text-gray-500">
+                    {{!-- Use post published at vs updated at if #template-updated-at is present --}}
+                    {{#has tag="#template-updated-at"}}
+                        <time class="capitalize" datetime="{{date updated_at format="YYYY-MM-DD"}}">{{date updated_at}}</time>
+                    {{else}}
+                        <time class="capitalize" datetime="{{date format="YYYY-MM-DD"}}">{{date}}</time>
+                    {{/has}}
+
+                    {{#primary_author}}
+                        <span class="mx-1.5 opacity-80">—</span>
+                        <a href="{{url absolute="true"}}" title="{{name}}" class="no-underline font-semibold text-inherit">{{name}}</a>
+                    {{/primary_author}}
+
+                    {{!-- Showcase Link --}}
+                    {{#has tag="#showcase"}}
+                        <span class="hidden mx-1.5 opacity-80">—</span>
+                        <a href="#" target="_blank" class="hidden [&.external]:inline-flex items-center hover:opacity-80 text-base leading-4 text-accent font-semibold no-underline hover:underline decoration-2 underline-offset-2">
+                            <span>{{t "Website"}}</span>
+                            {{> icons/arrow-up-right class="inline flex-shrink-0 w-4 h-4 ml-1 relative top-px" }}
+
+                            {{!-- Added showcase URL (Inlined here to avoid content shifting) --}}
+                            <script>
+                                (function() {
+                                    var link = document.currentScript.parentElement;
+                                    var tags = '{{tags visibility="internal" autolink="false" separator=","}}'.split(',');
+                                    var tagWithUrl = tags.find(t => t.startsWith('#showcase-url-'));
+                                    var url = tagWithUrl && tagWithUrl.replace('#showcase-url-', '').trim();
+                            
+                                    if (url) {
+                                        link.classList.add('external');
+                                        link.href = url;
+
+                                        link.previousElementSibling.classList.remove('hidden');
+                                    }                            
+                                })();
+                            </script>    
+                        </a>         
+                    {{/has}}            
+                </p>                                   
+
+                {{#if feature_image}}
+                    <figure class="mt-8 has-links {{#if feature_image_caption}} has-figcaption has-figcaption-lg {{/if}}">
+                        <div class="relative rounded-md overflow-hidden bg-gray-50 dark:bg-gray-800 
+                                after:absolute after:top-0 after:left-0 after:w-full after:h-full after:ring-1 after:ring-inset after:ring-gray-900/5 dark:after:ring-gray-50/5 after:rounded-md
+                                {{#has tag="#template-img-1-1"}} 
+                                    aspect-w-1 aspect-h-1
+                                {{else has tag="#template-img-3-4"}} 
+                                    aspect-w-3 aspect-h-4 
+                                {{else has tag="#template-img-4-3"}} 
+                                    aspect-w-4 aspect-h-3 
+                                {{else has tag="#template-img-4-5"}} 
+                                    aspect-w-4 aspect-h-5 
+                                {{else has tag="#template-img-5-4"}}
+                                    aspect-w-5 aspect-h-4
+                                {{else has tag="#template-img-9-16"}}
+                                    aspect-w-9 aspect-h-16
+                                {{else}}
+                                    aspect-w-16 aspect-h-9
+                                {{/has}}  
+                                ">
+                            <img
+                                class="lazyload !m-0 object-cover"
+                                data-sizes="auto"
+                                data-srcset="{{> srcset }}"
+                                srcset="{{img_url feature_image size="xxs"}}"
+                                src="{{img_url feature_image size="xl"}}"
+                                alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}"
+                            />
+                        </div>
+                        {{#if feature_image_caption}}
+                            <figcaption>{{feature_image_caption}}</figcaption>
+                        {{/if}}
+                    </figure>
+                {{/if}}
+            </header>
+
+            <div class="mt-8 content 4xl:content-lg">
+                {{content}}
+            </div>
+        </article>
+
+        {{!-- Comments --}}
+        {{#if comments}}
+            {{^has tag="#template-no-comments"}}
+                {{#has tag="#blog,#changelog,#showcase,#roadmap"}}
+                    <section class="w-full max-w-3xl mx-auto my-16 sm:my-20 md:my-28">
+                        {{comments}}
+                    </section>
+                {{/has}}
+            {{/has}}
+        {{/if}}   
+    </div>
+</div>

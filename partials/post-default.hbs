@@ -1,0 +1,44 @@
+<div class="outer xl:outer-xl {{post_class}}">
+    <article class="inner">
+        {{!-- Hero section --}}
+        {{> hero }}
+
+        <div class="{{#has tag="#template-toc"}} max-w-[1200px] mx-auto grid gap-10 grid-cols-1 xl:grid-cols-[auto_theme(spacing.56)] {{^if feature_image}} border-t border-gray-900/10 dark:border-gray-50/10 pt-16 sm:pt-20 md:pt-28 {{/if}}{{/has}}">
+            <div class="w-full max-w-3xl mx-auto {{#has tag="#template-toc"}} xl:ml-0 {{/has}}">
+                <div data-toc-src>
+                    {{!-- Fix for tocbot always having the first link active even if the heading is not yet visible https://github.com/tscanlin/tocbot/issues/217 --}}
+                    <h2 id="___TOCBOT___" class="sr-only m-0">
+                        <span aria-hidden="true">{{title}}</span>
+                    </h2>  
+                                        
+                    {{!-- Content --}}
+                    <div class="content lg:content-lg mb-16 sm:mb-20 md:mb-28 {{^has tag="#template-toc"}} has-full has-wide {{/has}}">
+                        {{content}}
+                    </div>
+                </div>
+
+                {{!-- Comments --}}
+                {{#if comments}}
+                    {{^has tag="#template-no-comments"}}
+                        {{#has tag="#blog,#changelog,#showcase,#roadmap"}}
+                            <section class="w-full max-w-3xl mx-auto my-16 sm:my-20 md:my-28">
+                                {{comments}}
+                            </section>
+                        {{/has}}
+                    {{/has}}
+                {{/if}}
+            </div>
+
+            {{!-- Table of contents --}}
+            {{#has tag="#template-toc"}}
+                <div data-toc-container class="hidden xl:block sticky top-[theme(spacing.36)] flex-none w-56 max-h-[calc(100vh-theme(spacing.48))]">
+                    <h2 class="text-2xs uppercase font-bold tracking-wider mb-3 dark:text-gray-200">
+                        {{t "On this page"}}
+                    </h2>
+                    <nav data-toc-target class="relative text-xs leading-4 overflow-auto max-h-[calc(100vh-theme(spacing.48))] text-gray-500 dark:text-gray-400 [&_.current]:dark:text-gray-300">
+                    </nav>
+                </div>      
+            {{/has}}    
+        </div>
+    </article>
+</div>

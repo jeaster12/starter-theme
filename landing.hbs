@@ -1,0 +1,30 @@
+{{!< default}}
+
+{{!-- Custom styles --}}
+{{#contentFor "styles"}} 
+    <style> :root { scroll-behavior: smooth; } </style>
+
+    {{!-- Make sure content is visible when js disabled (disable animation effect) --}}
+    <noscript>
+        <style type="text/css">
+            [data-sal|='slide'] { opacity: 1; transform: none; }
+        </style>
+    </noscript>    
+{{/contentFor}}
+
+{{!-- Add landing class to body --}}
+{{#contentFor "extra-body-class"}} page-landing {{/contentFor}}
+
+{{!-- Remove top spacing from footer --}}
+{{#contentFor "extra-footer-class"}} no-space-top {{/contentFor}}
+
+{{!-- Landing blocks --}}
+<div data-landing>
+    {{#foreach posts}}
+        {{#if @first}}
+            {{> landing-block isHero="true" }}
+        {{else}}
+            {{> landing-block }}
+        {{/if}}
+    {{/foreach}}
+</div>

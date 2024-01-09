@@ -1,0 +1,137 @@
+{{!-- Set global namespace --}}
+<script>
+    window.Spiritix = window.Spiritix || {};
+    window.Spiritix.version = "2.3.2";
+    window.Spiritix.t = {
+        "Toggle menu": '{{t "Toggle menu"}}'
+    };
+</script>
+
+{{!-- Dark mode setup --}}
+<script>
+    if (localStorage && localStorage.theme) {
+        document.documentElement.classList.toggle('dark', localStorage.theme === 'dark');
+    }
+</script>
+
+{{!-- Preload logos --}}
+{{#if @site.logo}}
+    <link rel="preload" href="{{@site.logo}}" as="image" fetchpriority="high" />
+{{/if}}
+
+{{#if @custom.dark_theme_logo}}
+    <link rel="preload" href="{{@custom.dark_theme_logo}}" as="image" fetchpriority="high" />
+{{/if}}
+
+{{!-- Fix logo min-width to avoid content shift on page load --}}
+{{#if @custom.logo_aspect_ratio}}
+    <script>
+        (function() {
+            var logoAspectRatio = "{{@custom.logo_aspect_ratio}}";
+            var logoAspectRatioParts = logoAspectRatio.trim().split(':');
+
+            if (logoAspectRatioParts.length === 2 && Number(logoAspectRatioParts[0]) && Number(logoAspectRatioParts[1])) {
+                var logoWidth = Number(logoAspectRatioParts[0]);
+                var logoHeight = Number(logoAspectRatioParts[1]);
+
+                document.documentElement.style.setProperty('--logo-width', logoWidth);
+                document.documentElement.style.setProperty('--logo-height', logoHeight);
+            }
+        })();
+    </script>
+{{/if}}
+
+{{!-- Set global color functions --}}
+<script>
+    window.Spiritix.hexToRgb = (hex) => {
+        hex = hex.replace('#', '');
+        hex = hex.length === 3 ? hex.split().map(c => c + c).join() : hex;
+
+        return [
+            parseInt(hex.substring(0,2), 16),
+            parseInt(hex.substring(2,4), 16),
+            parseInt(hex.substring(4,6), 16),
+        ];
+    };
+
+    window.Spiritix.getContrastColor = (hex) => {
+        const [r, g, b] = window.Spiritix.hexToRgb(hex);
+
+        const yiq = ((r*299) + (g*587) + (b*114)) / 1000;
+
+        return (yiq >= 128) ? '#000' : '#fff';
+    };
+</script>  
+
+{{!-- Set contract color & Set accent color as rgb so we can add alpha to it --}}
+{{#if @site.accent_color}}
+    <script>
+        (function() {
+            const hex = "{{@site.accent_color}}".trim();
+            const [r, g, b] = window.Spiritix.hexToRgb(hex);
+            const contrastColor = window.Spiritix.getContrastColor(hex);
+
+            document.documentElement.style.setProperty('--ghost-accent-color-light-rgb', `${r} ${g} ${b}`);
+            document.documentElement.style.setProperty('--color-contrast-light', contrastColor);
+
+            window.Spiritix.ghostAccentColorLightRgb = `${r} ${g} ${b}`;
+        })();
+    </script>    
+    <style>
+        :root {
+            --color-contrast: var(--color-contrast-light);
+            --ghost-accent-color-rgb: var(--ghost-accent-color-light-rgb);
+        }
+    </style>  
+{{/if}}
+
+{{!-- Set dark contract color & Set the dark theme accent color if configured (black is a placeholder) --}}
+{{#if @custom.dark_theme_accent_color}}
+    {{#match @custom.dark_theme_accent_color '!=' '#000000'}}
+        <script>
+            (function() {
+                const hexDark = "{{@custom.dark_theme_accent_color}}".trim();
+                const [r, g, b] = window.Spiritix.hexToRgb(hexDark);
+                const contrastColor = window.Spiritix.getContrastColor(hexDark);
+
+                document.documentElement.style.setProperty('--ghost-accent-color-dark-rgb', `${r} ${g} ${b}`);
+                document.documentElement.style.setProperty('--color-contrast-dark', contrastColor);
+
+                window.Spiritix.ghostAccentColorDarkRgb = `${r} ${g} ${b}`;
+            })();
+        </script>    
+
+        <style>
+            .dark {
+                --color-contrast: var(--color-contrast-dark);
+                --ghost-accent-color-rgb: var(--ghost-accent-color-dark-rgb);
+                --ghost-accent-color: {{@custom.dark_theme_accent_color}};
+            }
+        </style>               
+    {{/match}}
+{{/if}}
+
+{{!-- Remove posts tagged "#landing" from search results --}}
+<script>
+    (function() {
+        var open = XMLHttpRequest.prototype.open;
+        XMLHttpRequest.prototype.open = function(data) {
+            var method = arguments[0];
+            var url = arguments[1];
+
+            if (!method || !url || method.toUpperCase() !== "GET" || !url.includes('/ghost/api/content/posts/?')) {
+                return open.apply(this, arguments);
+            }
+
+            var parsedUrl = new URL(url);
+
+            if (parsedUrl.searchParams.get("limit") === "10000" && !parsedUrl.searchParams.has('filter')) {
+                parsedUrl.searchParams.set('filter', 'tags:-hash-landing');
+            }
+
+            arguments[1] = parsedUrl.href;
+
+            return open.apply(this, arguments);
+        }
+    })(); 
+</script>

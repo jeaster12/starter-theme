@@ -1,0 +1,46 @@
+routes:
+
+collections:
+  /:
+    permalink: /
+    template: landing
+    filter: "tags:hash-landing"
+    order: "published_at asc"
+    rss: false
+    limit: "all"
+
+  /docs/:
+    permalink: /docs/{slug}/
+    template: index
+    data: page.docs
+    filter: "tags:hash-docs"
+
+  /blog/:
+    permalink: /blog/{slug}/
+    template: blog
+    data: page.blog
+    filter: "tags:hash-blog"
+
+  /changelog/:
+    permalink: /changelog/{slug}/
+    template: changelog
+    data: page.changelog
+    filter: "tags:hash-changelog"
+
+  /showcase/:
+    permalink: /showcase/{slug}/
+    template: showcase
+    data: page.showcase
+    filter: "tags:hash-showcase"
+
+  /roadmap/:
+    permalink: /roadmap/{slug}/
+    template: roadmap
+    data: page.roadmap
+    filter: "tags:hash-roadmap"
+    order: "published_at asc"    
+    limit: "all"
+
+taxonomies:
+  tag: /tag/{slug}/
+  author: /author/{slug}/

@@ -1,0 +1,10 @@
+{{#contentFor "extra-header-class"}} has-breadcrumbs {{/contentFor}}
+{{#contentFor "extra-footer-class"}} no-space-top {{/contentFor}}
+
+{{#foreach tags limit="1"}}
+    {{#get "pages" filter="tags:{{slug}}" limit="1" include="tags" order="published_at asc" as |pages|}}
+        {{#foreach pages limit="1" as |page|}}
+            {{> docs indexPage=page post=../../.. }}
+        {{/foreach}}
+    {{/get}}    
+{{/foreach}}

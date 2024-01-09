@@ -1,0 +1,278 @@
+/* ---------------------------------------------------------------------------*/
+/* Github Dark theme styles for Prism.js */
+
+
+/*----------------------------------------------------------------------------*/
+/* General */
+
+pre[class*="language-"],
+code[class*="language-"] {
+  color: theme("colors.gray.300");
+  text-shadow: none;
+  direction: ltr;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+pre[class*="language-"]::selection,
+code[class*="language-"]::selection,
+pre[class*="language-"]::mozselection,
+code[class*="language-"]::mozselection {
+  text-shadow: none;
+  background: #234879;
+}
+
+@media print {
+  pre[class*="language-"],
+  code[class*="language-"] {
+    text-shadow: none;
+  }
+}
+
+figure.kg-code-card > pre {
+    margin: 0;
+}
+
+.content pre {
+    display: flex;
+    padding: theme("spacing.3") theme("spacing.4") !important;
+    overflow: auto;
+}
+
+.content pre code {
+    margin-left: calc(-1 * theme("spacing.4")) !important;
+    padding-left: theme("spacing.4") !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Tokens */
+
+.token.block {
+  display: initial;
+}
+
+.namespace {
+  opacity: .7;
+}
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: theme("colors.gray.400");
+}
+.token.punctuation {
+  color: theme("colors.gray.300");
+}
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: #79c0ff;
+}
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: #a5d6ff;
+}
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: #a5d6ff;
+}
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: #a5d6ff;
+}
+.token.function {
+  color: #d2a8ff;
+}
+.token.regex,
+.token.important,
+.token.variable {
+  color: #a8daff;
+}
+.token.important,
+.token.bold {
+  font-weight: 700;
+}
+.token.italic {
+  font-style: italic;
+}
+.token.entity {
+  cursor: help;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Line highlight */
+
+pre[data-line] {
+	position: relative;
+}
+
+pre[class*="language-"] > code[class*="language-"] {
+    position: relative;
+    z-index: 1;
+}
+
+.line-highlight {
+    position: absolute;
+    left: 0;
+    right: 0;
+    padding: inherit 0;
+    border-left: 4px solid theme("colors.accent");
+    z-index: -1;
+    pointer-events: none;
+    white-space: pre;
+}
+
+.line-highlight:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background: theme("colors.accent");
+    opacity: 0.2;
+    z-index: -1;
+}
+
+
+@media print {
+	.line-highlight {
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+	}
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Toolbar */
+
+div.code-toolbar {
+	position: relative;
+}
+
+div.code-toolbar > .toolbar {
+  position: absolute;
+  display: inline-flex;
+	z-index: 10;
+	top: theme("spacing[1.5]");
+	right: theme("spacing.2");
+	transition: opacity 0.3s ease-in-out;
+	opacity: 0;
+}
+
+div.code-toolbar:hover > .toolbar {
+	opacity: 1;
+}
+
+/* Separate line b/c rules are thrown out if selector is invalid.
+   IE11 and old Edge versions don't support :focus-within. */
+div.code-toolbar:focus-within > .toolbar {
+	opacity: 1;
+}
+
+div.code-toolbar > .toolbar > .toolbar-item {
+	display: inline-flex;
+}
+
+div.code-toolbar > .toolbar > .toolbar-item > a {
+	cursor: pointer;
+}
+
+.code-toolbar .toolbar-item > button {
+	background: none;
+	border: 0;
+	color: inherit;
+	font: inherit;
+	line-height: normal;
+	overflow: visible;
+	padding: 0;
+	-webkit-user-select: none; /* for button */
+	-moz-user-select: none;
+	-ms-user-select: none;
+    font-weight: theme("fontWeight.semibold");
+}
+
+.code-toolbar .toolbar-item > a,
+.code-toolbar .toolbar-item > button,
+.code-toolbar .toolbar-item > span {
+	color: theme("colors.gray.50");
+	font-size: theme("fontSize.xs");
+	padding: theme("spacing[1]");
+	background: theme("colors.gray.600");
+	border-radius: theme("borderRadius.DEFAULT");
+    opacity: 0.6;
+}
+
+.code-toolbar .toolbar-item > a:hover,
+.code-toolbar .toolbar-item > a:focus,
+.code-toolbar .toolbar-item > button:hover,
+.code-toolbar .toolbar-item > button:focus,
+.code-toolbar .toolbar-item > span:hover,
+.code-toolbar .toolbar-item > span:focus {
+	text-decoration: none;
+    opacity: 0.8;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Copy to clipboard */
+
+.code-toolbar .copy-to-clipboard-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.code-toolbar .copy-to-clipboard-button[data-copy-state="copy"]::before {
+    content: "";
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z' /%3E%3C/svg%3E");    
+    height: theme("height.5");
+    width: theme("width.5");
+    margin-right: theme("spacing.1");
+}
+
+.code-toolbar .copy-to-clipboard-button[data-copy-state="copy-success"]::before {
+    content: "";
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M5 13l4 4L19 7' /%3E%3C/svg%3E");
+    height: theme("height.5");
+    width: theme("width.5");
+    margin-right: theme("spacing.1");
+}
+
+.code-toolbar .copy-to-clipboard-button[data-copy-state="copy-error"]::before {
+    content: "";
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M6 18L18 6M6 6l12 12' /%3E%3C/svg%3E");
+    height: theme("height.5");
+    width: theme("width.5");
+    margin-right: theme("spacing.1");
+}
+
+.code-toolbar .copy-to-clipboard-button[data-copy-state="copy-success"],
+.code-toolbar .copy-to-clipboard-button[data-copy-state="copy-error"] {
+    padding-right: theme("spacing[1.5]");
+}

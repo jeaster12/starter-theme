@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html 
+    lang="{{ @site.locale }}" 
+    class="group/html min-h-screen 
+        {{#match @custom.default_color_scheme "Dark"}} dark {{/match}}
+        {{#match @custom.body_font "System serif"}} has-serif-body {{/match}} 
+        {{#match @custom.headings_font "System serif"}} has-serif-headings {{/match}}
+        {{#match @custom.docs_sidebar_style "Transparent"}} has-sidebar-transparent {{/match}}
+        {{#match @custom.docs_sidebar_style "Dark"}} has-sidebar-dark {{/match}}
+        {{#if @custom.gray_scale}} has-gray-scale-{{@custom.gray_scale}} {{/if}}
+    "
+    data-prismjs-copy="{{t "Copy"}}" 
+    data-prismjs-copy-error="{{t "Error"}}" 
+    data-prismjs-copy-success="{{t "Copied"}}">
+    <head>
+        {{!-- Basic site meta --}}
+        <meta charset="UTF-8">
+        <meta name="HandheldFriendly" content="True" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{meta_title page=(t " (Page %)")}}</title>
+
+        {{!-- Theme fonts --}}
+        {{> fonts }}
+
+        {{!-- Theme styles --}}
+        <link href="{{asset "/built/main.min.css"}}" rel="stylesheet" type="text/css" />
+
+        {{!-- Theme scripts --}}
+        <script src="{{asset "/built/main.min.js"}}" defer data-manual></script>        
+
+        {{!-- This is a slot used to inject page specific styles if needed --}}
+        {{{block "styles"}}}
+
+        {{!-- This is used by Ghost to output advanced SEO meta, structured data and other important settings --}}
+        {{ghost_head}}
+
+        {{!-- Scripts & styles inlined in `head` to avoid FOUC & content shifting --}}
+        {{> head-inlined }}
+    </head>
+    <body class="{{body_class}} {{block "extra-body-class"}} min-h-screen flex flex-col antialiased overflow-x-hidden text-gray-900 bg-white dark:text-gray-400 dark:bg-gray-900 [&.has-modal]:h-screen [&.has-modal]:overflow-hidden">
+        
+        {{!-- Blur --}}
+        <div class="absolute right-0 top-0 -z-10 overflow-hidden">
+            <div class="relative w-[600px] h-[600px] -translate-y-2/3 translate-x-2/3 lg:-translate-y-1/2 lg:translate-x-1/2 bg-gradient-to-bl from-accent to-transparent rounded-full blur-[100px] opacity-50"></div>
+        </div>
+
+        <div id="viewport" class="min-h-screen flex flex-col">
+            {{!-- Accessibility enhancement that lets keyboard users and screen readers
+            jumb to the main content without going through other elements (header,...) --}}
+            <a href="#main" class="group sr-only focus:not-sr-only focus-within:not-sr-only outline-none">
+                <span class="relative flex items-center justify-center w-full h-12 font-semibold bg-gray-900 text-gray-50 text-sm group-focus-within:ring group-focus:ring ring-1 ring-inset ring-accent dark:bg-gray-800/60">
+                    {{t "Skip to main content"}}
+                </span>
+            </a>       
+
+            {{!-- Site header --}}
+            {{> header }}
+
+            <main id="main" tabindex="-1" class="flex-none outline-none">
+                {{!-- This is used by page templates to inject their content here --}}
+                {{{ body }}}
+            </main>
+
+            {{!-- Site footer --}}
+            {{> footer }}
+        </div>
+
+        {{!-- PhotoSwipe (aka Lightbox) --}}
+        {{> pswp }}
+
+        {{!-- This is a slot used to inject page specific scripts if needed --}}
+        {{{block "scripts"}}}    
+
+        {{!-- This is used by Ghost to output important functional scripts --}}
+        {{ghost_foot}}
+    </body>
+</html>

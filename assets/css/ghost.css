@@ -1,0 +1,46 @@
+/* ---------------------------------------------------------------------------
+* Style adjustments for Ghost components (annoucements bar, ...)                                                   
+*/
+
+/* Announcement Bar */
+
+.gh-announcement-bar {
+    font-size: theme("fontSize.sm") !important;
+}
+
+.gh-announcement-bar-content * {
+    font-weight: theme("fontWeight.semibold") !important;
+}
+
+.gh-announcement-bar-content strong,
+.gh-announcement-bar-content a,
+.gh-announcement-bar-content a * {
+    font-weight: theme("fontWeight.bold") !important;
+}
+
+.gh-announcement-bar button svg path {
+    stroke: currentColor;
+}
+
+.gh-announcement-bar button:hover {
+    border-radius: theme('borderRadius.lg');
+    background: rgb(0 0 0 / 0.1);
+}
+
+.gh-announcement-bar.dark button:hover {
+    background: rgb(255 255 255 / 0.2);
+}
+
+.gh-announcement-bar.light {
+    background-color: theme('colors.gray.50') !important;
+}
+
+.gh-announcement-bar.dark {
+    background-color: theme('colors.gray.950') !important;
+}
+
+.gh-announcement-bar.accent,
+.gh-announcement-bar.accent a,
+.gh-announcement-bar.accent button {
+    color: var(--color-contrast, #fff) !important;
+}

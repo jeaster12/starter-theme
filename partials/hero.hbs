@@ -1,0 +1,201 @@
+<div data-hero class="text-lg max-w-none py-16 sm:py-20 md:py-28 mx-auto sm:text-center">
+
+    {{!-- Profile Image (Author) --}}
+    {{#is "author"}}
+        {{#if profile_image}}
+            <figure class="mb-10">
+                <img
+                    class="sm:mx-auto w-28 h-28 object-cover !rounded-full bg-gray-50 dark:bg-gray-800 ring-1 ring-inset ring-gray-900/5 dark:ring-gray-50/5"
+                    srcset="{{> srcset feature_image=profile_image }}"
+                    sizes="112px"
+                    src="{{img_url profile_image size="s"}}"
+                    alt="{{name}}"
+                />
+            </figure>        
+        {{/if }}
+    {{/is}}
+
+    {{!-- Primary Tag (Post) --}}
+    {{#is "post"}}
+        {{#has tag="#roadmap, #changelog"}}
+            {{#match tags.length ">" 1}}  {{!-- #changelog or #roadmap is always present, that's why 1 and not 0 --}}
+                <div class="inline-flex flex-wrap">
+                    {{#foreach tags}}
+                        <a href="{{url absolute="true"}}" class="inline-flex items-center px-2 py-1 mb-2 mr-2 rounded-full ring-1 ring-gray-900/10 dark:ring-gray-50/10 hover:opacity-80">
+                            <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-gray-500" style="{{#if accent_color}}background-color: {{accent_color}}{{/if}}"></span>
+                            <span class="text-xs font-medium leading-none">{{name}}</span>
+                        </a>
+                    {{/foreach}}            
+                </div>
+            {{/match}}
+        {{else}}
+            {{#foreach tags limit="1"}}
+                <a href="{{url absolute="true"}}" class="block text-accent font-semibold mt-0 mb-1 no-underline hover:opacity-85">
+                    {{name}}
+                </a>
+            {{/foreach}}
+        {{/has}}
+    {{/is}}
+
+    {{!-- Heading --}}
+    <h1 class="my-0 mx-auto max-w-4xl text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 dark:text-gray-200">
+        {{#is "tag,author"}}
+            {{name}}
+        {{else}}
+            {{title}}
+        {{/is}}
+    </h1>    
+
+    {{!-- Lead --}}
+    {{#if custom_excerpt}}
+        <p class="max-w-3xl mx-auto mt-6 mb-0 text-lead text-gray-600 dark:text-gray-400">{{custom_excerpt}}</p>
+    {{else if description}}
+        <p class="max-w-3xl mx-auto mt-6 mb-0 text-lead text-gray-600 dark:text-gray-400">{{description}}</p>
+    {{else if bio}}
+        <p class="max-w-3xl mx-auto mt-6 mb-0 text-lead text-gray-600 dark:text-gray-400">{{{bio}}}</p>
+    {{else if html}}
+        {{#if showContent}}
+            <div class="max-w-3xl mx-auto mt-6 text-lead content content-lg text-gray-600 dark:text-gray-400">
+                {{{html}}}
+            </div>
+        {{/if}}
+    {{/if}}
+
+    {{!-- Meta --}}
+    {{#is "post"}}
+        <p class="mt-6 text-base text-gray-400 dark:text-gray-500">
+            {{!-- Use post published at vs updated at if #template-updated-at is present --}}
+            {{#has tag="#template-updated-at"}}
+                <time class="capitalize" datetime="{{date updated_at format="YYYY-MM-DD"}}">{{date updated_at}}</time>
+            {{else}}
+                <time class="capitalize" datetime="{{date format="YYYY-MM-DD"}}">{{date}}</time>
+            {{/has}}
+
+            {{#primary_author}}
+                <span class="mx-1.5 opacity-80">—</span>
+                <a href="{{url absolute="true"}}" title="{{name}}" class="no-underline font-semibold text-inherit">{{name}}</a>
+            {{/primary_author}}
+
+            {{!-- Showcase Link --}}
+            {{#has tag="#showcase"}}
+                <span class="hidden mx-1.5 opacity-80">—</span>
+                <a href="#" target="_blank" class="hidden [&.external]:inline-flex items-center hover:opacity-80 text-base leading-4 text-accent font-semibold no-underline hover:underline decoration-2 underline-offset-2">
+                    <span>{{t "Website"}}</span>
+                    {{> icons/arrow-up-right class="inline flex-shrink-0 w-4 h-4 ml-1 relative top-px" }}
+
+                    {{!-- Added showcase URL (Inlined here to avoid content shifting) --}}
+                    <script>
+                        (function() {
+                            var link = document.currentScript.parentElement;
+                            var tags = '{{tags visibility="internal" autolink="false" separator=","}}'.split(',');
+                            var tagWithUrl = tags.find(t => t.startsWith('#showcase-url-'));
+                            var url = tagWithUrl && tagWithUrl.replace('#showcase-url-', '').trim();
+                    
+                            if (url) {
+                                link.classList.add('external');
+                                link.href = url;
+
+                                link.previousElementSibling.classList.remove('hidden');
+                            }                            
+                        })();
+                    </script>    
+                </a>         
+            {{/has}}            
+        </p>    
+
+    {{/is}}
+
+    {{!-- Posts count --}}
+    {{#is "author"}}
+        <div class="max-w-3xl mx-auto mt-3 text-sm text-gray-500 dark:text-gray-400">
+            <span class="sm:hidden"> — </span> {{plural paginationTotal empty=(t 'No posts yet') singular=(t '% post published') plural=(t '% posts published')}}
+        </div>
+    {{/is}}
+
+    {{#is "tag"}}
+        <div class="max-w-3xl mx-auto mt-3 text-sm text-gray-500 dark:text-gray-400">
+            <span class="sm:hidden"> — </span> {{plural paginationTotal empty=(t 'No posts yet') singular=(t 'A collection of % post') plural=(t 'A collection of % posts')}}
+        </div>
+    {{/is}}
+
+    {{!-- Links (Author) --}}
+    {{#is "author"}}    
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-center max-sm:space-y-4 sm:space-x-8">
+            {{#if website}}
+                <span class="inline-flex items-center sm:mt-8 first:mt-8">
+                    {{> icons/glob class="flex-none mr-2 w-6 h-6"}}
+                    <a href="{{website}}" target="_blank" class="text-base text-inherit font-semibold no-underline hover:underline underline-offset-2 decoration-2">
+                        {{t "Website"}}
+                    </a>
+                </span>
+            {{/if}}
+
+            {{#if twitter}}
+                <span class="inline-flex items-center sm:mt-8 first:mt-8">
+                    {{> icons/twitter class="flex-none mr-3 w-5 h-5 "}}
+                    <a href="{{twitter_url twitter}}" target="_blank" class="text-base text-inherit font-semibold no-underline hover:underline underline-offset-2 decoration-2">
+                        Twitter
+                    </a>
+                </span>
+            {{/if}}
+
+            {{#if facebook}}
+                <span class="inline-flex items-center sm:mt-8 first:mt-8">
+                    {{> icons/facebook class="flex-none mr-3 w-5 h-5" }}
+                    <a href="{{facebook_url facebook}}" target="_blank" class="text-base text-inherit font-semibold no-underline hover:underline underline-offset-2 decoration-2">
+                        Facebook
+                    </a>
+                </span>
+            {{/if}}
+
+            {{#if location}}
+                <span class="inline-flex items-center sm:mt-8 first:mt-8">
+                    {{> icons/pin class="flex-none mr-2 w-6 h-6"}}
+                    <span class="text-base text-inherit font-semibold">
+                        {{location}}
+                    </span>
+                </span>
+            {{/if}}
+        </div>
+    {{/is}}
+
+
+    {{!-- Image --}}
+    {{#if feature_image}}
+        <figure class="max-w-[1200px] mx-auto mt-10 xl:mt-16 has-links {{#if feature_image_caption}} has-figcaption has-figcaption-lg {{/if}}">
+            <div class="relative rounded-md lg:rounded-xl overflow-hidden bg-gray-50 dark:bg-gray-800 
+                        after:absolute after:top-0 after:left-0 after:w-full after:h-full after:ring-1 after:ring-inset after:ring-gray-900/5 dark:after:ring-gray-50/5 after:rounded-md lg:after:rounded-xl 
+                        {{#has tag="#template-img-1-1"}} 
+                            aspect-w-1 aspect-h-1
+                        {{else has tag="#template-img-3-4"}} 
+                            aspect-w-3 aspect-h-4 
+                        {{else has tag="#template-img-4-3"}} 
+                            aspect-w-4 aspect-h-3 
+                        {{else has tag="#template-img-4-5"}} 
+                            aspect-w-4 aspect-h-5 
+                        {{else has tag="#template-img-5-4"}}
+                            aspect-w-5 aspect-h-4
+                        {{else has tag="#template-img-9-16"}}
+                            aspect-w-9 aspect-h-16
+                        {{else has tag="#template-img-16-9"}}
+                            aspect-w-16 aspect-h-9
+                        {{else has tag="#showcase"}}
+                            aspect-w-5 aspect-h-4
+                        {{else}}
+                            aspect-w-16 aspect-h-9 
+                        {{/has}}">
+                <img
+                    class="lazyload !m-0 object-cover"
+                    data-sizes="auto"
+                    data-srcset="{{> srcset}}"
+                    srcset="{{img_url feature_image size="xxs"}}"
+                    src="{{img_url feature_image size="2xl"}}"
+                    alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}"
+                />
+            </div>
+            {{#if feature_image_caption}}
+                <figcaption>{{feature_image_caption}}</figcaption>
+            {{/if}}
+        </figure>
+    {{/if}}              
+</div>

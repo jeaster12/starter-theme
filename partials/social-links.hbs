@@ -1,0 +1,56 @@
+{{#if @site.twitter}}
+    <a data-social-link class="{{linkClass}}" href="{{twitter_url @site.twitter}}" title="Twitter" aria-label="Twitter" target="_blank">
+        {{> icons/twitter class=iconClass }}
+    </a>
+{{/if}}
+
+{{#if @site.facebook}}
+    <a data-social-link class="{{linkClass}}" href="{{facebook_url @site.facebook}}" title="Facebook" aria-label="Facebook" target="_blank">
+        {{> icons/facebook class=iconClass }}
+    </a>
+{{/if}}
+
+{{!-- Dynamic social media links --}}
+{{#get "tags" filter="slug:~^'hash-social-'" limit="all" order="published_at asc" as |tags| }}
+    {{#foreach tags visibility="all"}}
+        {{#if canonical_url}}
+            {{#match slug "hash-social-x"}}
+                <a data-social-link class="{{../../linkClass}}" href="{{canonical_url}}" title="X (Twitter)" aria-label="X (Twitter)" target="_blank">
+                    {{> icons/twitter-x class=../../iconClass }}
+                </a>
+            {{else match slug "hash-social-github"}}
+                <a data-social-link class="{{../../linkClass}}" href="{{canonical_url}}" title="Github" aria-label="Github" target="_blank">
+                    {{> icons/github class=../../iconClass }}
+                </a>
+            {{else match slug "hash-social-discord"}}
+                <a data-social-link class="{{../../linkClass}}" href="{{canonical_url}}" title="Discord" aria-label="Discord" target="_blank">
+                    {{> icons/discord class=../../iconClass }}
+                </a>
+            {{else match slug "hash-social-linkedin"}}
+                <a data-social-link class="{{../../linkClass}}" href="{{canonical_url}}" title="LinkedIn" aria-label="LinkedIn" target="_blank">
+                    {{> icons/linkedin class=../../iconClass }}
+                </a>
+            {{else match slug "hash-social-youtube"}}
+                <a data-social-link class="{{../../linkClass}}" href="{{canonical_url}}" title="Youtube" aria-label="Youtube" target="_blank">
+                    {{> icons/youtube class=../../iconClass }}
+                </a>
+            {{else match slug "hash-social-telegram" }}
+                <a data-social-link class="{{../../linkClass}}" href="{{canonical_url}}" title="Telegram" aria-label="Telegram" target="_blank">
+                    {{> icons/telegram class=../../iconClass }}
+                </a>
+            {{else match slug "hash-social-instagram" }}
+                <a data-social-link class="{{../../linkClass}}" href="{{canonical_url}}" title="Instagram" aria-label="Instagram" target="_blank">
+                    {{> icons/instagram class=../../iconClass }}
+                </a>
+            {{else match slug "hash-social-mastodon" }}
+                <a data-social-link class="{{../../linkClass}}" href="{{canonical_url}}" title="Mastodon" aria-label="Mastodon" target="_blank">
+                    {{> icons/mastodon class=../../iconClass }}
+                </a>
+            {{else match slug "hash-social-tiktok" }}
+                <a data-social-link class="{{../../linkClass}}" href="{{canonical_url}}" title="Tiktok" aria-label="Tiktok" target="_blank">
+                    {{> icons/tiktok class=../../iconClass }}
+                </a>
+            {{/match }}
+        {{/if}}
+    {{/foreach}}
+{{/get}}

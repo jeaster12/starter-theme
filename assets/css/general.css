@@ -1,0 +1,183 @@
+/*----------------------------------------------------------------------------*/
+/* Global styles */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Gray scale */
+
+html/* .has-gray-scale-Slate */ { 
+    --color-gray-50 : 248 250 252;
+    --color-gray-100: 241 245 249;
+    --color-gray-200: 226 232 240;
+    --color-gray-300: 203 213 225;
+    --color-gray-400: 148 163 184;
+    --color-gray-500: 100 116 139;
+    --color-gray-600: 71 85 105;
+    --color-gray-700: 51 65 85;
+    --color-gray-800: 30 41 59;
+    --color-gray-900: 15 23 42;
+    --color-gray-950: 2 6 23;
+}     
+
+html.has-gray-scale-Gray  {
+    --color-gray-50 : 249 250 251;
+    --color-gray-100: 243 244 246;
+    --color-gray-200: 229 231 235;
+    --color-gray-300: 209 213 219;
+    --color-gray-400: 156 163 175;
+    --color-gray-500: 107 114 128;
+    --color-gray-600: 75 85 99;
+    --color-gray-700: 55 65 81;
+    --color-gray-800: 31 41 55;
+    --color-gray-900: 17 24 39;
+    --color-gray-950: 3 7 18;            
+}
+
+html.has-gray-scale-Zinc {
+    --color-gray-50 : 250 250 250;
+    --color-gray-100: 244 244 245;
+    --color-gray-200: 228 228 231;
+    --color-gray-300: 212 212 216;
+    --color-gray-400: 161 161 170;
+    --color-gray-500: 113 113 122;
+    --color-gray-600: 82 82 91;
+    --color-gray-700: 63 63 70;
+    --color-gray-800: 39 39 42;
+    --color-gray-900: 24 24 27;
+    --color-gray-950: 9 9 11;            
+}
+
+html.has-gray-scale-Stone {
+    --color-gray-50 : 250 250 249;
+    --color-gray-100: 245 245 244;
+    --color-gray-200: 231 229 228;
+    --color-gray-300: 214 211 209;
+    --color-gray-400: 168 162 158;
+    --color-gray-500: 120 113 108;
+    --color-gray-600: 87 83 78;
+    --color-gray-700: 68 64 60;
+    --color-gray-800: 41 37 36;
+    --color-gray-900: 28 25 23;
+    --color-gray-950: 12 10 9;            
+}
+
+html.has-gray-scale-Neutral {
+    --color-gray-50 : 250 250 250;
+    --color-gray-100: 245 245 245;
+    --color-gray-200: 229 229 229;
+    --color-gray-300: 212 212 212;
+    --color-gray-400: 163 163 163;
+    --color-gray-500: 115 115 115;
+    --color-gray-600: 82 82 82;
+    --color-gray-700: 64 64 64;
+    --color-gray-800: 38 38 38;
+    --color-gray-900: 23 23 23;
+    --color-gray-950: 10 10 10;            
+}   
+
+@layer base {
+    /* Font family */
+    html {
+        font-family: var(--font-body, ui-sans-serif), theme("fontFamily.sans");
+    }
+
+    html.has-serif-body {
+        font-family: var(--font-body, ui-serif), theme("fontFamily.serif");
+    }
+    
+    h1, h2, h3, h4, h5, h6,
+    .has-headings-font {
+        font-family: var(--font-headings, ui-sans-serif), theme("fontFamily.sans");
+    }
+    
+    html.has-serif-headings h1,
+    html.has-serif-headings h2,
+    html.has-serif-headings h3,
+    html.has-serif-headings h4,
+    html.has-serif-headings h5,
+    html.has-serif-headings h6,
+    html.has-serif-headings .has-headings-font {
+        font-family: var(--font-headings, ui-serif), theme("fontFamily.serif");
+    }
+
+    /* Color scheme */
+    .dark {
+		color-scheme: dark;
+	}    
+
+    .dark iframe {
+		color-scheme: normal;
+	} 
+}
+
+/* Layout helpers */
+@layer components {
+    .outer {
+        padding-left: theme('spacing.outer');
+        padding-right: theme('spacing.outer');
+    }
+    
+    .outer-xl {        
+        padding-left: theme('spacing.outer-xl');
+        padding-right: theme('spacing.outer-xl');
+    }
+
+    .inner {
+        width: 100%;
+        max-width: theme('screens.6xl');
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* lazysizes */
+
+.lazyload {
+    filter: blur(10px);
+}
+
+.lazyloading {
+    filter: blur(10px);
+}
+
+.kg-image-card img.lazyload,
+.kg-gallery-image img.lazyload,
+.kg-product-card .kg-product-card-image.lazyload,
+.kg-image-card img.lazyloading,
+.kg-gallery-image img.lazyloading,
+.kg-product-card .kg-product-card-image.lazyloading {
+    /* Hide overflow caused by blur effect */
+    clip-path: inset(0 round 0.25rem);
+}
+
+.kg-image-card.kg-width-full img.lazyload,
+.kg-image-card.kg-width-full img.lazyloading {
+    /* Hide overflow caused by blur effect */
+    clip-path: inset(0);    
+}
+
+html.no-img-blur .lazyload,
+html.no-img-blur .lazyloading {
+    filter: none !important;
+    opacity: 0;
+}
+
+.lazyloaded {
+    opacity: 1;
+    filter: blur(0);
+    transition: all 400ms ease-in-out;
+}
+
+.kg-image-card img.lazyloaded,
+.kg-gallery-image img.lazyloaded,
+.kg-product-card .kg-product-card-image.lazyloaded {
+    /* Hide overflow caused by blur effect */
+    clip-path: inset(0);
+}
+
+/* TOC */
+a[href="#___TOCBOT___"] {
+    display: none;
+}

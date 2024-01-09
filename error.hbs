@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html 
+    lang="{{ @site.locale }}" 
+    class="group/html min-h-screen 
+        {{#match @custom.body_font "System serif"}} has-serif-body {{/match}} 
+        {{#match @custom.headings_font "System serif"}} has-serif-headings {{/match}}
+    ">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="HandheldFriendly" content="True" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{{meta_title}}</title>
+        
+        {{!-- Theme styles --}}
+        <link rel="stylesheet" type="text/css" href="{{asset "/built/main.min.css"}}" />
+
+        {{!-- This is used by Ghost to output advanced SEO meta, structured data and other important settings --}}
+        {{ghost_head}}     
+
+        {{!-- Scripts & styles inlined in `head` to avoid FOUC & content shifting --}}
+        {{> head-inlined }}           
+    </head>
+    <body class="page-error min-h-screen flex flex-col antialiased overflow-x-hidden text-gray-900 bg-white dark:text-gray-400 dark:bg-gray-900 [&.has-modal]:h-screen [&.has-modal]:overflow-hidden">
+
+        {{!-- Blur --}}
+        <div class="absolute right-0 top-0 -z-10 overflow-hidden">
+            <div class="relative w-[600px] h-[600px] -translate-y-2/3 translate-x-2/3 lg:-translate-y-1/2 lg:translate-x-1/2 bg-gradient-to-bl from-accent to-transparent rounded-full blur-[100px] opacity-50"></div>
+        </div>
+
+        <div id="viewport" class="min-h-screen flex flex-col">
+            <header 
+                data-header
+                class="group z-50 flex flex-wrap flex-none items-center backdrop-blur border-b border-gray-900/5 transition-colors duration-300 [&.stuck]:bg-white/90
+                    dark:border-gray-50/5 dark:bg-transparent dark:[&.stuck]:bg-gray-900/70 h-20
+                    "    
+            >
+                <nav class="outer xl:outer-xl flex items-center w-full h-full py-4">
+                    <div class="inner flex items-center min-h-10">
+                        <a data-brand class="flex-none mr-8 font-bold text-lg text-gray-900 dark:text-gray-50 {{#if @site.logo}} sm:min-w-logo {{/if}}" href="{{@site.url}}" aria-label="{{@site.title}}">
+                            {{#if @site.logo}}
+                                {{#if @custom.dark_theme_logo}}
+                                    <img class="max-h-9 w-auto hidden dark:block" src="{{@custom.dark_theme_logo}}" alt="{{@site.title}}"/>
+                                    <img class="max-h-9 w-auto block dark:hidden" src="{{@site.logo}}" alt="{{@site.title}}"/>
+                                {{else}}
+                                    <img class="max-h-9 w-auto" src="{{@site.logo}}" alt="{{@site.title}}"/>
+                                {{/if}}
+                            {{else}}
+                                {{@site.title}}
+                            {{/if}}
+                        </a> 
+
+                        <ul class="flex ml-auto -mr-3 sm:mx-0 space-x-2 text-gray-700 dark:text-gray-200" role="list">
+                            <li class="inline-flex">
+                                <a  href="{{@site.url}}" class="group px-3 py-1.5 inline-flex items-center font-semibold text-sm rounded-lg hover:bg-gray-100 [&.current]:bg-gray-100 dark:hover:bg-gray-700 dark:[&.current]:bg-gray-700">
+                                    &larr; &nbsp; {{t "Go back"}}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>  
+            </header>
+
+            <main>
+                <section class="outer xl:outer-xl">
+                    <div class="inner min-h-[calc(100vh_-_theme(spacing.20))] flex items-center justify-center py-10">
+                        <section class="-translate-y-20">
+                            <div class="flex items-center justify-center">
+                                <h1 class="font-bold text-2xl sm:text-6xl pr-3 mr-3 sm:pr-6 sm:mr-6 text-gray-900 dark:text-gray-50 border-r border-gray-900/10 dark:border-gray-50/10">
+                                    {{statusCode}}
+                                </h1>
+                                <p class="text-sm sm:text-base text-gray-500 dark:text-gray-400">
+                                    {{t "Something went wrong."}}
+                                </p>
+                            </div>
+                            <p class="max-w-3xl mt-4 text-center text-gray-500 dark:text-gray-400">
+                                {{message}}
+                            </p>
+                        </section>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        {{!-- This is used by Ghost to output important functional scripts --}}
+        {{ghost_foot}}        
+    </body>
+</html>

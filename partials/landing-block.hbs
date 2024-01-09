@@ -1,0 +1,109 @@
+<div id="{{slug}}"
+    tabindex="-1"
+    data-landing-block="{{@number}}"
+    class="landing-block landing-block-{{@number}} relative outer xl:outer-xl
+            {{#has tag="#landing-no-padding"}} last:pb-16 sm:last:pb-28 scroll-m-20 {{else}} py-16 sm:py-28 max-sm:scroll-m-4 {{/has}}
+            {{^has tag="#landing-txt-left, #landing-img-right, #landing-img-left"}} is-txt-center {{/has}}
+            {{#has tag="#landing-animation"}} has-animation {{/has}} 
+            {{post_class}}"
+>
+    <div class="inner max-w-7xl">
+
+        {{!-- Backgrounds --}}
+        {{#has tag="#landing-bg-alt"}} <div class="absolute inset-0 -z-10 bg-gray-50 dark:bg-gray-950"></div> {{/has}}
+        {{#has tag="#landing-bg-accent"}} <div class="absolute inset-0 -z-10 bg-accent opacity-5"></div> {{/has}}        
+
+        <div class="grid gap-10 lg:gap-20 items-center
+                    {{#has tag="#landing-img-right, #landing-img-left"}} xl:grid-cols-2 {{/has}}
+                    {{^has tag="#landing-txt-left, #landing-img-right, #landing-img-left"}} sm:text-center {{/has}}"
+        >
+            {{!-- Text --}}
+            <div>
+                {{^has tag="#landing-no-title"}}
+                    {{!-- Heading  --}}
+                    <div {{^if isHero}} data-sal="slide-down" {{/if}} 
+                        class="mb-8 max-w-5xl text-4xl md:text-5xl tracking-tight leading-tight font-bold 
+                            {{#if isHero}} 
+                                animate-slide-down from-accent from-10% to-gray-900 dark:to-gray-50 bg-gradient-to-bl bg-clip-text text-transparent lg:text-7xl py-3
+                            {{else}}
+                                py-2 text-gray-900 dark:text-gray-50 lg:text-6xl
+                            {{/if}}
+                            {{^has tag="#landing-txt-left, #landing-img-right, #landing-img-left"}} mx-auto {{/has}}
+                        "
+                    >
+                        {{#if isHero}} 
+                            <h1 class="{{^has tag="#landing-txt-left, #landing-img-right, #landing-img-left"}} mx-auto {{/has}}">
+                                {{title}}
+                            </h1>
+                        {{else}}
+                            <h2 class="{{^has tag="#landing-txt-left, #landing-img-right, #landing-img-left"}} mx-auto {{/has}}">
+                                {{title}}
+                            </h2>
+
+                            {{!-- Fix: Product cards use h4 headings which creates out of orders headings error  --}}
+                            <h3 class="sr-only">&nbsp;</h3>
+                        {{/if}}
+                    </div>
+                {{/has}}
+
+                {{!-- Content --}}
+                <div {{^if isHero}} data-sal="slide-up" {{/if}} 
+                    class="landing-block-content content lg:content-lg 
+                        {{^has tag="#landing-txt-left, #landing-img-right, #landing-img-left"}} mx-auto {{/has}}
+                        {{#if isHero}} animate-slide-up {{/if}}
+                        {{#has tag="#landing-testimonials, #landing-features"}} max-w-7xl {{else}} max-w-3xl {{/has}}
+                    "
+                >
+                    {{{html}}}
+
+                    {{!-- Fix: Ghost beta editor adds empty text nodes that break inline-flex --}}
+                    {{#has tag="#landing-testimonials, #landing-features"}}
+                        <script>
+                            (function() {
+                                const contentElement = document.currentScript.parentElement;
+                                Array.from(contentElement.childNodes)
+                                    .filter(child => child.nodeType === Node.TEXT_NODE && child.nodeValue && !child.nodeValue.trim())
+                                    .forEach(child => child.remove());
+                            })();
+                        </script>
+                    {{/has}}                    
+                </div>
+            </div>
+
+            {{!-- Image --}}
+            {{#if feature_image}}
+                <figure {{^if isHero}} data-sal="slide-up" {{/if}} class="{{#if isHero}} animate-slide-up {{/if}} w-full max-w-7xl mx-auto {{#has tag="#landing-img-left"}} xl:order-first {{/has}}">
+                    <div class="bg-black/5 rounded-md lg:rounded-xl overflow-hidden
+                                after:absolute after:top-0 after:left-0 after:w-full after:h-full after:ring-1 after:ring-inset after:ring-gray-900/5 dark:after:ring-gray-50/5 after:rounded-md lg:after:rounded-xl
+                                {{#has tag="#landing-img-1-1,#template-img-1-1"}} 
+                                    aspect-w-1 aspect-h-1
+                                {{else has tag="#landing-img-3-4,#template-img-3-4"}} 
+                                    aspect-w-3 aspect-h-4 
+                                {{else has tag="#landing-img-4-3,#template-img-4-3"}} 
+                                    aspect-w-4 aspect-h-3 
+                                {{else has tag="#landing-img-4-5,#template-img-4-5"}} 
+                                    aspect-w-4 aspect-h-5 
+                                {{else has tag="#landing-img-5-4,#template-img-5-4"}}
+                                    aspect-w-5 aspect-h-4
+                                {{else has tag="#landing-img-9-16,#template-img-9-16"}}
+                                    aspect-w-9 aspect-h-16
+                                {{else}}
+                                    aspect-w-16 aspect-h-9
+                                {{/has}}
+                                "
+                    >
+                        <img
+                            class="lazyload !m-0 object-cover"
+                            data-sizes="auto"
+                            data-srcset="{{> srcset}}"
+                            srcset="{{img_url feature_image size="xxs"}}"
+                            src="{{img_url feature_image size="xl"}}"
+                            alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}"
+                            loading="{{#if isHero}}eager{{else}}lazy{{/if}}"
+                        />
+                    </div>
+                </figure>
+            {{/if}}               
+        </div>
+    </div>
+</div>

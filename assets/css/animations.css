@@ -1,0 +1,42 @@
+/* ---------------------------------------------------------------------------
+* Animations styles for the Sal.js lib                                                      
+*/
+
+
+/* Settings */
+
+@media not all and (prefers-reduced-motion) { 
+    .has-animation {
+        --animation-duration: 600ms;
+        --animation-delay: 100ms;
+    }
+}
+
+/* Core */
+
+[data-sal] {
+    transition-duration: var(--animation-duration, 0ms);
+    transition-delay: var(--animation-delay, 0ms);
+    transition-timing-function: var(--animation-easing, ease-out);
+}
+
+/* Slide */
+
+[data-sal|='slide'] {
+    opacity: 0;
+    transition-property: opacity, transform;
+}
+
+[data-sal='slide-up'] {
+    transform: translateY(40px);
+}
+
+[data-sal='slide-down'] {
+    transform: translateY(-40px);
+}
+
+[data-sal|='slide'].sal-animate,
+body.sal-disabled [data-sal|='slide'] {
+  opacity: 1;
+  transform: none;
+}

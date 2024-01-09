@@ -1,0 +1,103 @@
+<header 
+    data-header
+    class="group sticky z-50 top-0 min-h-20 lg:h-20 flex flex-wrap flex-none items-center backdrop-blur border-b border-gray-900/5 transition-colors duration-300 [&.stuck]:bg-white/90
+        dark:border-gray-50/5 dark:bg-transparent dark:[&.stuck]:bg-gray-900/70
+        {{{block "extra-header-class"}}} 
+        "    
+>
+    <nav class="outer xl:outer-xl flex items-center w-full py-4 group-[.has-breadcrumbs]:lg:min-h-0 group-[.has-breadcrumbs]:min-h-20">
+        <div class="inner flex items-center min-h-10">
+            <a data-brand 
+                class="flex-shrink mr-8 font-bold text-lg text-gray-900 dark:text-gray-50 {{#if @site.logo}} has-logo lg:min-w-logo {{/if}}" 
+                href="{{@site.url}}" 
+                aria-label="{{@site.title}}">
+                {{#if @site.logo}}
+                    {{#if @custom.dark_theme_logo}}
+                        <img class="max-h-9 w-auto hidden dark:block" src="{{@custom.dark_theme_logo}}" alt="{{@site.title}}"/>
+                        <img class="max-h-9 w-auto block dark:hidden" src="{{@site.logo}}" alt="{{@site.title}}"/>
+                    {{else}}
+                        <img class="max-h-9 w-auto" src="{{@site.logo}}" alt="{{@site.title}}"/>
+                    {{/if}}
+                {{else}}
+                    {{@site.title}}
+                {{/if}}
+            </a>
+
+            {{!-- Navigation (Desktop) --}}
+            {{navigation}}
+
+            {{!-- Theme toggle & social links (desktop) --}}
+            <div data-header-buttons class="hidden lg:flex items-center mx-5 pl-5 space-x-1 border-l text-gray-400 border-gray-900/10 dark:border-gray-50/10 {{#match @custom.max_navigation_items ">" 5}} max-4xl:[&_:nth-child(n_+_6)]:hidden {{/match}}">
+                <button data-theme-toggle class="h-9 w-9 flex items-center justify-center flex-shrink-0 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-gray-300" title="{{t "Change theme"}}" aria-label="{{t "Change theme"}}">
+                    {{> icons/sun class="dark:hidden w-6 h-6" }}
+                    {{> icons/moon class="hidden dark:inline w-6 h-6 relative -top-px" }}
+                </button>
+
+                {{> social-links iconClass="w-5 h-5" linkClass="[&:nth-child(n_+_7)]:hidden h-9 w-9 flex items-center justify-center flex-shrink-0 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-gray-300" }}  
+            </div>
+
+            {{!-- Search (Medium) --}}
+            <button data-ghost-search class="hidden lg:max-xl:flex ml-auto h-9 w-9 items-center justify-center flex-shrink-0 rounded-lg text-gray-500 dark:text-gray-400 bg-white/30 dark:bg-transparent hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-gray-300" title="{{t "Quick search..." }}" aria-label="{{t "Quick search..." }}">
+                {{> icons/search class="w-5 h-5" }}
+            </button>        
+            {{!-- Search (Large) --}}
+            <button data-ghost-search class="flex-shrink hidden xl:flex items-center h-9 w-56 min-w-0 px-4 ml-auto overflow-hidden ring-1 ring-gray-900/10 rounded-md text-gray-600/[0.82] text-sm bg-white/95 hover:bg-gray-50/90 hover:ring-gray-900/20 dark:text-gray-400/90 dark:bg-gray-800 dark:hover:bg-gray-700 dark:ring-inset dark:ring-gray-50/10">
+                {{> icons/search class="flex-none w-5 h-5 text-gray-400 dark:text-gray-500" }}
+                <span class="mx-2 truncate">{{t "Quick search..." }}</span>
+                <span class="ml-auto">⌘K</span>
+            </button>
+
+            {{!-- Theme toggle, search & menu (mobile) --}}
+            <div class="flex lg:hidden items-center ml-auto -mr-1.5 space-x-2 text-gray-400">
+                <button data-theme-toggle class="w-8 h-8 flex items-center justify-center" title="{{t "Change theme"}}" aria-label="{{t "Change theme"}}">
+                    {{> icons/sun class="dark:hidden w-6 h-6 hover:text-gray-700 dark:hover:text-gray-100" }}
+                    {{> icons/moon class="hidden dark:inline w-5 h-5 hover:text-gray-700 dark:hover:text-gray-100 relative -top-px" }}
+                </button>
+                <button data-ghost-search class="w-8 h-8 flex items-center justify-center" title="{{t "Quick search..."}}" aria-label="{{t "Quick search..."}}">
+                    {{> icons/search class="w-5 h-5 hover:text-gray-700 dark:hover:text-gray-100" }}
+                </button>
+                <button data-mobile-menu-toggle class="w-8 h-8 flex items-center justify-center" title="{{t "Toggle menu"}}" aria-label="{{t "Toggle menu"}}">
+                    {{> icons/menu class="w-5 h-5 hover:text-gray-700 dark:hover:text-gray-100" }}
+                </button>
+            </div>        
+        </div>
+    </nav>
+
+    {{!-- Breadcrumbs docs menu for small screens --}}
+    <div data-breadcrumbs class="outer xl:outer-xl hidden group-[.has-breadcrumbs]:lg:hidden group-[.has-breadcrumbs]:flex items-center w-full h-10 text-2xs border-t border-gray-900/5 dark:border-gray-50/5 ">
+        <div class="inner flex items-center overflow-hidden">
+            <button data-breadcrumbs-button class="flex-none flex items-center justify-center h-8 w-8 -ml-1.5 mr-1.5" aria-label="{{t "Toggle menu"}}">
+                {{> icons/menu class="flex-none h-5 w-5 text-gray-400 hover:text-gray-700 dark:hover:text-gray-100"}}
+            </button>
+
+            <span data-breadcrumbs-section class="hidden flex-none truncate text-gray-500 dark:text-gray-400">
+                <span data-breadcrumbs-section-text></span>
+                <span class="mx-2">/</span>
+            </span>
+            <span data-breadcrumbs-current class="hidden truncate font-semibold text-gray-900 dark:text-gray-200"></span>
+        </div>
+    </div>    
+</header>
+
+{{!-- Mobile menu --}}
+<nav data-mobile-menu class="group invisible flex lg:hidden fixed inset-0 -z-10 [&.open]:visible [&.open]:z-50 ">
+    <div data-mobile-menu-close class="fixed inset-0 bg-black/20 backdrop-blur-sm"></div>
+
+    <div class="fixed top-0 right-0 bottom-0 w-full max-w-xs bg-white shadow-lg font-semibold text-gray-900 transition ease-out translate-x-full group-[.open]:translate-x-0 dark:bg-gray-800 dark:text-gray-200">
+        <div class="relative pl-9 pr-16 pb-6 pt-14 h-full overflow-y-scroll overflow-x-hidden">
+            <button data-mobile-menu-close aria-label="{{t "Close"}}" class="fixed flex items-center justify-center top-4 right-3 p-2 text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
+                {{> icons/x class="h-5 w-5" }}
+            </button>
+
+            <div class="flex flex-col min-h-full">
+                {{navigation isMobile=true }}
+
+                <div class="mt-6 pt-4 border-t border-gray-900/10 dark:border-gray-50/5">
+                    <div class="flex flex-wrap -ml-2 text-gray-400">
+                        {{> social-links iconClass="w-5 h-5" linkClass="mr-2 h-9 w-9 flex items-center justify-center flex-shrink-0 rounded-lg hover:text-gray-700 dark:hover:text-gray-200" }}  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

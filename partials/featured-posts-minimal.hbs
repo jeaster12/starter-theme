@@ -1,0 +1,85 @@
+{{#if posts}}
+    <div class="max-w-3xl mx-auto pt-16 sm:pt-20 -mb-16 sm:-mb-20">
+        {{#foreach posts}}
+            <div class="{{post_class}} flex flex-wrap mb-7 sm:mb-10 {{#if @last}} after:block after:w-full after:pt-20 after:mb-10 after:border-b dark:after:border-gray-50/10 {{/if}}">
+                {{#if @first}}
+                    <div class="w-full sm:w-1/2 flex-none pr-4 mb-10 sm:mb-0 text-gray-500 dark:text-gray-400">
+                        {{t "Featured"}}
+                    </div>
+                {{/if}}
+
+                <div class="w-full sm:w-1/2 flex-none ml-auto">
+                    {{#if feature_image}}
+                        {{#if ../currentPage}}
+                            {{#with ../currentPage }} {{!-- Back to page context --}}
+                                {{#has tag="#blog-with-images"}}
+                                    {{#with ..}} {{!-- Back to current post context --}}
+                                        <a href="{{url absolute="true"}}" class="block mb-2">
+                                            <figure>
+                                                <div class="relative rounded-md overflow-hidden bg-gray-50 dark:bg-gray-800 
+                                                        after:absolute after:top-0 after:left-0 after:w-full after:h-full after:ring-1 after:ring-inset after:ring-gray-900/5 dark:after:ring-gray-50/5 after:rounded-md
+                                                        {{#with ..}}
+                                                            {{#has tag="#template-cards-img-1-1"}} 
+                                                                aspect-w-1 aspect-h-1
+                                                            {{else has tag="#template-cards-img-3-4"}} 
+                                                                aspect-w-3 aspect-h-4 
+                                                            {{else has tag="#template-cards-img-4-3"}} 
+                                                                aspect-w-4 aspect-h-3 
+                                                            {{else has tag="#template-cards-img-4-5"}} 
+                                                                aspect-w-4 aspect-h-5 
+                                                            {{else has tag="#template-cards-img-5-4"}}
+                                                                aspect-w-5 aspect-h-4
+                                                            {{else has tag="#template-cards-img-9-16"}}
+                                                                aspect-w-9 aspect-h-16
+                                                            {{else}}
+                                                                aspect-w-16 aspect-h-9
+                                                            {{/has}}                                            
+                                                        {{/with}}
+                                                        ">
+                                                    <img
+                                                        class="lazyload !m-0 object-cover z-10 hover:scale-105"
+                                                        data-sizes="auto"
+                                                        data-srcset="{{> srcset }}"
+                                                        srcset="{{img_url feature_image size="xxs"}}"
+                                                        src="{{img_url feature_image size="xl"}}"
+                                                        alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}"
+                                                        loading="lazy"
+                                                    />
+                                                </div>
+                                            </figure>     
+                                        </a>
+                                    {{/with}}  
+                                {{/has}}
+                            {{/with}}
+                        {{/if}}
+                    {{/if}}     
+
+                    <h2>
+                        <a class="font-semibold hover:opacity-80 text-gray-900 dark:text-gray-200" href="{{url absolute="true"}}">
+                            {{title}}
+                        </a>
+                    </h2>
+
+                    <div class="mt-1 text-gray-500 dark:text-gray-400">
+                        {{#if ../useUpdatedAt}}
+                            <time class="capitalize" datetime="{{date updated_at format="YYYY-MM-DD"}}">
+                                {{date updated_at format="MMMM DD, YYYY"}}
+                            </time>
+                        {{else}}
+                            <time class="capitalize" datetime="{{date format="YYYY-MM-DD"}}">
+                                {{date format="MMMM DD, YYYY"}}
+                            </time>     
+                        {{/if}}                            
+
+                        {{#foreach tags limit="1"}}
+                            <span class="opacity-50"> — </span>
+                            <a class="hover:opacity-80" href="{{url absolute="true"}}">
+                                {{name}}
+                            </a>
+                        {{/foreach}}
+                    </div>
+                </div>
+            </div>
+        {{/foreach}}
+    </div>        
+{{/if}}

@@ -1,0 +1,117 @@
+{{!< default}}
+
+{{!-- Ghost doesn't do code injection for pages used as data in routes.yaml --}}
+{{#contentFor "styles"}}
+    {{#page}} {{#if codeinjection_head}} {{{codeinjection_head}}} {{/if}} {{/page}}
+{{/contentFor }}
+
+{{#contentFor "scripts"}}
+    {{#page}} {{#if codeinjection_foot}} {{{codeinjection_foot}}} {{/if}} {{/page}}
+{{/contentFor }}
+
+<div class="outer xl:outer-xl {{#page}} {{post_class}} {{/page}}">
+    <div class="inner">
+
+        {{!-- Hero section --}}
+        {{#page}}
+            {{> hero showContent="true" }}
+        {{/page}}
+
+        {{!-- Feed / Timeline --}}
+        <div class="max-w-7xl mx-auto py-16 sm:py-20 px-0 lg:px-4">
+            <div data-pagination-feed class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-1">
+                {{#foreach posts}}
+                    <div data-pagination-post class="{{post_class}} p-0 lg:p-6 rounded-2xl transition-colors duration-500 hover:bg-gray-50 dark:hover:bg-gray-800">
+                        <a class="block" href="{{url absolute="true"}}">
+                            {{#if feature_image}}
+                                <figure class="mb-4">
+                                    <div class="relative rounded-lg overflow-hidden bg-gray-50 dark:bg-gray-800 
+                                            after:absolute after:top-0 after:left-0 after:w-full after:h-full after:ring-1 after:ring-inset after:ring-gray-900/5 dark:after:ring-gray-50/5 after:rounded-lg                                    
+                                            {{#with ../page}}
+                                                {{#has tag="#template-cards-img-1-1"}} 
+                                                    aspect-w-1 aspect-h-1
+                                                {{else has tag="#template-cards-img-3-4"}} 
+                                                    aspect-w-3 aspect-h-4 
+                                                {{else has tag="#template-cards-img-4-3"}} 
+                                                    aspect-w-4 aspect-h-3 
+                                                {{else has tag="#template-cards-img-4-5"}} 
+                                                    aspect-w-4 aspect-h-5 
+                                                {{else has tag="#template-cards-img-5-4"}}
+                                                    aspect-w-5 aspect-h-4
+                                                {{else has tag="#template-cards-img-9-16"}}
+                                                    aspect-w-9 aspect-h-16
+                                                {{else has tag="#template-cards-img-16-9"}}
+                                                    aspect-w-16 aspect-h-9
+                                                {{else}}
+                                                    aspect-w-5 aspect-h-4 
+                                                {{/has}}                                            
+                                            {{/with}}                                            
+                                            ">
+                                        <img
+                                            class="lazyload !m-0 object-cover"
+                                            data-sizes="auto"
+                                            data-srcset="{{> srcset}}"
+                                            srcset="{{img_url feature_image size="xxs"}}"
+                                            src="{{img_url feature_image size="xl"}}"
+                                            alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}"
+                                            loading="lazy"
+                                        />
+                                    </div>
+                                </figure>
+                            {{/if}}     
+                            
+                            <div>
+                                <h2 class="flex items-center text-md font-semibold truncate text-gray-900 dark:text-gray-50">
+                                    {{title}}
+                                </h2>
+                                {{#if custom_excerpt}}
+                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                        {{custom_excerpt}}
+                                    </p>
+                                {{/if}}  
+
+                            </div>                   
+                            <div class="hidden items-center mt-3 text-sm leading-4 text-accent font-semibold underline">
+                                <span></span>
+
+                                {{!-- Add showcase URL (Inlined here to avoid content shifting)  --}}
+                                <script>
+                                    (function() {
+                                        var parent = document.currentScript.parentElement;
+                                        var tags = '{{tags visibility="internal" autolink="false" separator=","}}'.split(',');
+                                        var tagWithUrl = tags.find(t => t.startsWith('#showcase-url-'));
+                                        var url = tagWithUrl && tagWithUrl.replace('#showcase-url-', '').trim();
+                                        var span = parent && parent.querySelector("span");
+                                
+                                        if (url && span) {
+                                            parent.classList.remove('hidden');
+                                            span.textContent = url.replace(/^https:\/\//, "").replace(/^http:\/\//, "").replace(/^www\./, "").replace(/\/$/, "");
+                                        }                            
+                                    })();
+                                </script>                                
+                            </div> 
+                        </a>
+                    </div> 
+                {{/foreach}}
+            </div>
+        </div>
+
+        {{!-- Load more / Pagination --}}
+        {{#if pagination}}
+            <div class="flex justify-center">
+                <button 
+                    data-pagination-btn
+                    data-total-pages="{{pagination.pages}}"
+                    class="group hidden text-sm font-semibold my-16 sm:my-20 hover:opacity-80 dark:text-gray-200">
+                    <span class="flex items-center">
+                        {{t "Load more"}}
+
+                        {{> icons/arrow-sm-down class="w-4 h-4 ml-0.5 group-[.loading]:hidden"}}
+                        {{> icons/loader class="w-4 h-4 ml-0.5 hidden group-[.loading]:inline"}}
+                    </span>
+                </button>
+            </div>
+        {{/if}}
+
+    </div>
+</div>

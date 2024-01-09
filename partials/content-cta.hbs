@@ -1,0 +1,54 @@
+{{{html}}}
+
+<aside data-content-cta class="relative js-toc-ignore">
+    {{#if html}}
+        <div data-content-cta-blur class="absolute w-full top-0 -translate-y-full bg-gradient-to-b to-70% from-transparent to-white dark:to-gray-900">
+            &nbsp; <br> &nbsp; <br> &nbsp;
+        </div>
+    {{/if}}
+
+    <div class="flex flex-col items-center text-center w-full px-4 py-10 lg:px-10 text-base bg-accent-10 rounded-md dark:border dark:border-accent-20">
+        <h2 class="text-gray-900 dark:text-gray-50 text-xl sm:text-2xl leading-snug tracking-tight">
+            {{#has visibility="paid"}}
+                {{#is "page"}}
+                    {{t "This page is for paying subscribers only"}}
+                {{else}}
+                    {{t "This post is for paying subscribers only"}}
+                {{/is}} 
+            {{else has visibility="members"}}
+                {{#is "page"}}
+                    {{t "This page is for subscribers only"}}
+                {{else}}
+                    {{t "This post is for subscribers only"}}
+                {{/is}}
+            {{else has visibility="tiers"}}
+                {{#is "page"}} 
+                    {{#match tiers.length 1 }}
+                        {{{t "This page is for subscribers on the {tiers} tier only" tiers=(tiers lastSeparator=(t " and ") suffix="") }}}
+                    {{else}}
+                        {{{t "This page is for subscribers on the {tiers} tiers only" tiers=(tiers lastSeparator=(t " and ") suffix="") }}}
+                    {{/match}}
+                {{else}}
+                    {{#match tiers.length 1 }}
+                        {{{t "This post is for subscribers on the {tiers} tier only" tiers=(tiers lastSeparator=(t " and ") suffix="") }}}
+                    {{else}}
+                        {{{t "This post is for subscribers on the {tiers} tiers only" tiers=(tiers lastSeparator=(t " and ") suffix="") }}}
+                    {{/match}}
+                {{/is}}
+            {{/has}}
+        </h2>
+
+        {{#if @member}}
+            <button data-portal="account/plans" class="bg-accent text-accent-contrast rounded-lg px-3 py-1.5 mt-7 font-semibold text-base leading-relaxed hover:opacity-85">
+                {{t "Upgrade your account"}}
+            </button>
+        {{else}}
+            <button data-portal="signup" class="bg-accent text-accent-contrast rounded-lg px-3 py-1.5 mt-7 font-semibold text-base leading-relaxed hover:opacity-85">
+                {{t "Subscribe now"}}
+            </button>
+            <p class="mt-5 text-base">
+                {{t "Already have an account?"}} <button data-portal="signin" class="block sm:inline mx-auto font-medium underline decoration-accent decoration-2 underline-offset-2 hover:text-accent">{{t "Sign in"}}</button>
+            </p>
+        {{/if}}
+    </div>
+</aside>
